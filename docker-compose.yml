@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    container_name: programmers-todo-db
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: todo-db
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - dev-todo:/var/lib/postgresql/data
+
+volumes:
+  dev-todo:

@@ -6,11 +6,10 @@ import com.todo.boundedContext.todo.dto.TodoResponse;
 import com.todo.boundedContext.todo.out.TodoRepository;
 import com.todo.global.exception.NotFoundEntityException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +27,12 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public List<TodoResponse> listTodos() {
-        List<Todo> todoList = todoRepository.findAll();
+    public Page<TodoResponse> listTodos(String completed, Pageable pageable) {
+        Page<Todo> todoPage  =
+                completed == null ? todoRepository.findAll(pageable)
+                        : todoRepository.findByCompleted(completed, pageable);
 
-        return todoList.stream()
-                .map(TodoResponse::from)
-                .collect(Collectors.toList());
+        return todoPage.map(TodoResponse::from);
     }
 
     @Transactional

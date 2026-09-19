@@ -1,19 +1,16 @@
 package com.todo.boundedContext.todo.in;
 
-import com.oracle.svm.core.annotate.Delete;
 import com.todo.boundedContext.todo.app.TodoService;
-import com.todo.boundedContext.todo.domain.Todo;
 import com.todo.boundedContext.todo.dto.TodoRequest;
 import com.todo.boundedContext.todo.dto.TodoResponse;
 import com.todo.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -30,8 +27,10 @@ public class ApiTodoController {
     }
 
     @GetMapping("/todos")
-    public ApiResponse<List<TodoResponse>> getTodos() {
-        List<TodoResponse> response = todoService.listTodos();
+    public ApiResponse<Page<TodoResponse>> getTodos(
+            @RequestParam(required = false) String completed, Pageable pageable
+    ) {
+        Page<TodoResponse> response = todoService.listTodos(completed, pageable);
         log.info("todo list response: {}", response);
         return new ApiResponse<>(HttpStatus.OK.toString(), "목록 조회 완료", response);
     }

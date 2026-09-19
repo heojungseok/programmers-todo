@@ -5,7 +5,7 @@ spring:
   application:
     name: programmers-todo
   datasource:
-    url: jdbc:postgresql://localhost:5432/todo-test-db
+    url: jdbc:postgresql://localhost:5432/todo_test_db
     username: sa
     driver-class-name: org.postgresql.Driver
   jpa:

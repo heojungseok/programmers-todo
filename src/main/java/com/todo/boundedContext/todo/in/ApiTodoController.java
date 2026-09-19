@@ -4,6 +4,7 @@ import com.todo.boundedContext.todo.app.TodoService;
 import com.todo.boundedContext.todo.dto.TodoRequest;
 import com.todo.boundedContext.todo.dto.TodoResponse;
 import com.todo.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Todo API", description = "할 일 관리를 위한 API")
 public class ApiTodoController {
 
     private final TodoService todoService;

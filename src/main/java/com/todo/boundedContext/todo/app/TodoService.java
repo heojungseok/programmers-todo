@@ -28,9 +28,10 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public Page<TodoResponse> listTodos(String completed, Pageable pageable) {
+        boolean isFiltered = "Y".equalsIgnoreCase(completed) || "N".equalsIgnoreCase(completed);
         Page<Todo> todoPage  =
-                completed == null ? todoRepository.findAll(pageable)
-                        : todoRepository.findByCompleted(completed, pageable);
+                isFiltered ? todoRepository.findByCompleted(completed, pageable)
+                        :todoRepository.findAll(pageable);
 
         return todoPage.map(TodoResponse::from);
     }

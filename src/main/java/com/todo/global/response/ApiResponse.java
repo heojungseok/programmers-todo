@@ -2,6 +2,7 @@ package com.todo.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.antlr.v4.runtime.atn.ErrorInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
@@ -16,5 +17,9 @@ public class ApiResponse<T> {
         this.resultCode = resultCode;
         this.msg = msg;
         this.data = null;
+    }
+
+    public static <T> ApiResponse<T> error(HttpStatus code, String msg) {
+        return new ApiResponse<>(code.toString(), msg);
     }
 }

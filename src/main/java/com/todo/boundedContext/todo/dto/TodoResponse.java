@@ -17,16 +17,6 @@ public class TodoResponse {
     private LocalDateTime modifiedAt;
     private CompletionStatus completed;
 
-    private TodoResponse(Todo todo) {
-        this(
-                todo.getId(),
-                todo.getTitle(),
-                todo.getCreatedAt(),
-                todo.getModifiedAt(),
-                todo.getCompleted()
-        );
-    }
-
     public static TodoResponse from(Todo todo) {
         return new TodoResponse(
                 todo.getId(),

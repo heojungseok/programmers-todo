@@ -46,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request
     ) {
         List<FieldErrorResponse> errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(FieldErrorResponse::from)
+                .map(e -> new FieldErrorResponse(e.getField(), e.getDefaultMessage()))
                 .toList();
         return ResponseEntity.status(status).headers(headers)
                 .body(ApiResponse.of(status, "입력값이 올바르지 않습니다.", errors));

@@ -1,19 +1,13 @@
 package com.todo.boundedContext.todo.domain;
 
-import com.todo.boundedContext.todo.dto.TodoRequest;
-import com.todo.boundedContext.todo.dto.TodoResponse;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.security.PublicKey;
 import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.*;
@@ -31,8 +25,9 @@ public class Todo {
     @NotNull
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String completed = "N";
+    private CompletionStatus completed = CompletionStatus.N;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -47,10 +42,8 @@ public class Todo {
         return new Todo(title);
     }
 
-    public TodoResponse updateTodo(TodoRequest request) {
-        this.title = request.getTitle();
-        this.completed = request.getCompleted();
-
-        return TodoResponse.from(this);
+    public void update(String title, CompletionStatus completed) {
+        this.title = title;
+        this.completed = completed;
     }
 }

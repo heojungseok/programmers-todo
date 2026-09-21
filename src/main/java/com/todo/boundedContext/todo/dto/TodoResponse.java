@@ -1,5 +1,6 @@
 package com.todo.boundedContext.todo.dto;
 
+import com.todo.boundedContext.todo.domain.CompletionStatus;
 import com.todo.boundedContext.todo.domain.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ public class TodoResponse {
     private String title;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private String completed;
+    private CompletionStatus completed;
 
     private TodoResponse(Todo todo) {
         this(

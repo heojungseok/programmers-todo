@@ -1,8 +1,10 @@
 package com.todo.boundedContext.todo.in;
 
 import com.todo.boundedContext.todo.app.TodoService;
-import com.todo.boundedContext.todo.dto.TodoRequest;
+import com.todo.boundedContext.todo.domain.CompletionStatus;
+import com.todo.boundedContext.todo.dto.TodoCreateRequest;
 import com.todo.boundedContext.todo.dto.TodoResponse;
+import com.todo.boundedContext.todo.dto.TodoUpdateRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
@@ -33,7 +35,7 @@ class ApiTodoControllerTest {
     @Test
     void create() {
 
-        TodoRequest todoRequest = new TodoRequest("dddd", "N");
+        TodoCreateRequest todoRequest = new TodoCreateRequest("dddd");
 
         restClient
                 .post().uri("/api/todos")
@@ -46,7 +48,7 @@ class ApiTodoControllerTest {
     @Test
     void createError() {
 
-        TodoRequest todoRequest = new TodoRequest("", "N");
+        TodoCreateRequest todoRequest = new TodoCreateRequest("");
 
         restClient
                 .post().uri("/api/todos")
@@ -72,7 +74,7 @@ class ApiTodoControllerTest {
     void udpate() {
 
         TodoResponse response = todoService.create("test todo");
-        TodoRequest todoRequest = new TodoRequest(response.getTitle() + " 2", "Y");
+        TodoUpdateRequest todoRequest = new TodoUpdateRequest(response.getTitle() + " 2", CompletionStatus.Y);
         restClient
                 .put().uri("/api/todos/" + response.getId())
                 .contentType(MediaType.APPLICATION_JSON)

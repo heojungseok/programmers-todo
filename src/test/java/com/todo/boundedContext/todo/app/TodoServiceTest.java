@@ -1,7 +1,8 @@
 package com.todo.boundedContext.todo.app;
 
+import com.todo.boundedContext.todo.domain.CompletionStatus;
 import com.todo.boundedContext.todo.domain.Todo;
-import com.todo.boundedContext.todo.dto.TodoRequest;
+import com.todo.boundedContext.todo.dto.TodoUpdateRequest;
 import com.todo.boundedContext.todo.dto.TodoResponse;
 import com.todo.boundedContext.todo.out.TodoRepository;
 import jakarta.persistence.EntityManager;
@@ -49,7 +50,7 @@ class TodoServiceTest {
     void update() {
 
         TodoResponse origin = todoService.create("title");
-        TodoRequest request = new TodoRequest("바뀐 제목", "Y");
+        TodoUpdateRequest request = new TodoUpdateRequest("바뀐 제목", CompletionStatus.Y);
 
         todoService.update(origin.getId(), request);
 

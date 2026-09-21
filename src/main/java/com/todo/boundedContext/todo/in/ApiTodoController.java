@@ -1,8 +1,10 @@
 package com.todo.boundedContext.todo.in;
 
 import com.todo.boundedContext.todo.app.TodoService;
-import com.todo.boundedContext.todo.dto.TodoRequest;
+import com.todo.boundedContext.todo.domain.CompletionStatus;
+import com.todo.boundedContext.todo.dto.TodoCreateRequest;
 import com.todo.boundedContext.todo.dto.TodoResponse;
+import com.todo.boundedContext.todo.dto.TodoUpdateRequest;
 import com.todo.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,7 +35,7 @@ public class ApiTodoController {
 
     @GetMapping("/todos")
     public ResponseEntity<ApiResponse<Page<TodoResponse>>> getTodos(
-            @RequestParam(required = false) String completed, Pageable pageable
+            @RequestParam(required = false) CompletionStatus completed, Pageable pageable
     ) {
         Page<TodoResponse> response = todoService.listTodos(completed, pageable);
         log.info("todo list response: {}", response);
@@ -48,7 +50,7 @@ public class ApiTodoController {
     }
 
     @PostMapping("/todos")
-    public ResponseEntity<ApiResponse<TodoResponse>> create(@Valid @RequestBody TodoRequest request) {
+    public ResponseEntity<ApiResponse<TodoResponse>> create(@Valid @RequestBody TodoCreateRequest request) {
 
         TodoResponse response = todoService.create(request.getTitle());
         log.info("create response: {}", response);
@@ -58,7 +60,7 @@ public class ApiTodoController {
     }
 
     @PutMapping("/todos/{todoId}")
-    public ResponseEntity<ApiResponse<TodoResponse>> update(@Valid @RequestBody TodoRequest request, @PathVariable Long todoId) {
+    public ResponseEntity<ApiResponse<TodoResponse>> update(@Valid @RequestBody TodoUpdateRequest request, @PathVariable Long todoId) {
         TodoResponse response = todoService.update(todoId, request);
         log.info("update response: {}", response);
         return ApiResponse.respond(HttpStatus.OK, "할 일이 변경됐습니다.", response);

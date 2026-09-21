@@ -1,7 +1,8 @@
 package com.todo.boundedContext.todo.app;
 
+import com.todo.boundedContext.todo.domain.CompletionStatus;
 import com.todo.boundedContext.todo.domain.Todo;
-import com.todo.boundedContext.todo.dto.TodoRequest;
+import com.todo.boundedContext.todo.dto.TodoUpdateRequest;
 import com.todo.boundedContext.todo.dto.TodoResponse;
 import com.todo.boundedContext.todo.out.TodoRepository;
 import com.todo.global.exception.NotFoundEntityException;
@@ -27,21 +28,24 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TodoResponse> listTodos(String completed, Pageable pageable) {
-        boolean isFiltered = "Y".equalsIgnoreCase(completed) || "N".equalsIgnoreCase(completed);
-        Page<Todo> todoPage  =
-                isFiltered ? todoRepository.findByCompleted(completed, pageable)
-                        :todoRepository.findAll(pageable);
+    public Page<TodoResponse> listTodos(CompletionStatus completed, Pageable pageable) {
+        Page<Todo> todoPage = completed != null
+                ? todoRepository.findByCompleted(completed, pageable)
+                : todoRepository.findAll(pageable);
 
         return todoPage.map(TodoResponse::from);
     }
 
     @Transactional
-    public TodoResponse update(Long todoId, TodoRequest request) {
+    public TodoResponse update(Long todoId, TodoUpdateRequest request) {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 할 일 입니다."));
 
-        return todo.updateTodo(request);
+        todo.update(request.getTitle(), request.getCompleted());
+        // @LastModifiedDate는 flush 시점에 채워지므로 응답 전에 반영한다.
+        todoRepository.flush();
+
+        return TodoResponse.from(todo);
     }
 
     @Transactional

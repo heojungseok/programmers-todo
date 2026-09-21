@@ -53,7 +53,7 @@ docker compose up -d && ./gradlew bootRun
 
 - **구조:** Controller(`in`) · Service(`app`) · Repository(`out`)로 역할을 나누고, 요청·응답에는 엔티티 대신 DTO(`TodoCreateRequest`, `TodoUpdateRequest`, `TodoResponse`)를 씁니다.
 - **주소:** 자원을 복수 명사 `/api/todos`, 개별 할 일을 `/api/todos/{todoId}`로 두고 동작은 HTTP 메서드로 구분했습니다.
-- **완료 전환을 `PUT`으로:** 바꿀 수 있는 값이 제목과 완료 여부뿐이라 수정 API 하나로 처리합니다. `PUT`은 전체 교체이므로 두 필드를 모두 받습니다. 빠진 값을 유지할지 지울지 모호해지지 않습니다.
+- **완료 전환을 `PUT`:** 바꿀 수 있는 값이 제목과 완료 여부뿐이라 수정 API 하나로 처리합니다. `PUT`은 전체 교체이므로 두 필드를 모두 받습니다. 빠진 값을 유지할지 지울지 모호해지지 않습니다.
 - **상태 코드:** 생성은 새 자원의 주소를 알리려고 `201`과 `Location`, 삭제는 돌려줄 자원이 없어 `204`를 씁니다. 요청 자체가 잘못되면 `400`, 대상이 없으면 `404`입니다.
 - **오류 모양 통일:** 검증·JSON 파싱처럼 컨트롤러 전에 나는 예외도 있어서, `GlobalExceptionHandler`가 Spring의 `ResponseEntityExceptionHandler`를 상속해 모든 오류를 같은 모양으로 바꿉니다.
 - **입력 검증:** 제목은 `@NotBlank`·`@Size(max = 200)`, 완료 여부는 `Y`/`N` enum으로 받아 허용되지 않은 값을 400으로 거부합니다.

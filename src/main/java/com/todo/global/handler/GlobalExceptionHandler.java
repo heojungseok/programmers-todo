@@ -15,7 +15,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -84,7 +83,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private String typeMismatchMessage(TypeMismatchException ex) {
-        String name = ex instanceof MethodArgumentTypeMismatchException m ? m.getName() : ex.getPropertyName();
+        String name = ex.getPropertyName();
         Class<?> type = ex.getRequiredType();
         if (type != null && type.isEnum()) {
             return "'%s' 값은 %s 중 하나여야 합니다.".formatted(name, Arrays.toString(type.getEnumConstants()));

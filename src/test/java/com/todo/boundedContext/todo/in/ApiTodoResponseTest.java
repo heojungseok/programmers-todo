@@ -174,6 +174,16 @@ class ApiTodoResponseTest {
     }
 
     @Test
+    void 없는_필드로_정렬하면_400을_반환한다() {
+        restClient.get().uri("/api/todos?sort=nope")
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .jsonPath("$.resultCode").isEqualTo("400 BAD_REQUEST")
+                .jsonPath("$.msg").isEqualTo("'nope'은(는) 정렬할 수 없는 필드입니다.");
+    }
+
+    @Test
     void 삭제하면_204를_반환하고_이후_조회는_404다() {
         Long id = createTodo("삭제할 일");
 

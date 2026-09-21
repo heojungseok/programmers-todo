@@ -5,6 +5,7 @@ import com.todo.global.response.ApiResponse;
 import com.todo.global.response.FieldErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.data.core.PropertyReferenceException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundEntityException.class)
     public ResponseEntity<ApiResponse<Void>> handleNotFoundEntity(NotFoundEntityException e) {
         return ApiResponse.respond(HttpStatus.NOT_FOUND, e.getMessage(), null);
+    }
+
+    // 정렬 조건은 Repository가 쿼리를 만들 때 검사되므로 MVC 예외 처리 대상이 아니다.
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidSort(PropertyReferenceException e) {
+        String msg = "'%s'은(는) 정렬할 수 없는 필드입니다.".formatted(e.getPropertyName());
+        return ApiResponse.respond(HttpStatus.BAD_REQUEST, msg, null);
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,7 +1,5 @@
 server:
   port: 8889
-  error:
-    include-stacktrace: never
 
 spring:
   application:

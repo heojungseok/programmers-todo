@@ -36,7 +36,7 @@ class TodoServiceTest {
 
         long before = todoRepository.count();
 
-        TodoResponse delete = todoService.delete(response.getId());
+        todoService.delete(response.getId());
 
         long after = todoRepository.count();
 

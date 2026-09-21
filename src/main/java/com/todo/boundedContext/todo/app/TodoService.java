@@ -45,13 +45,11 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoResponse delete(Long todoId) {
+    public void delete(Long todoId) {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 할 일 입니다."));
 
         todoRepository.delete(todo);
-
-        return TodoResponse.of(todo);
     }
 
     @Transactional(readOnly = true)

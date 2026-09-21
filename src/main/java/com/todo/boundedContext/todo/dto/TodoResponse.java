@@ -35,14 +35,4 @@ public class TodoResponse {
                 todo.getCompleted()
         );
     }
-
-    public static TodoResponse of(Todo todo) {
-        return new TodoResponse(
-                todo.getId(),
-                null,
-                null,
-                null,
-                "N"
-        );
-    }
 }

@@ -65,9 +65,9 @@ public class ApiTodoController {
     }
 
     @DeleteMapping("/todos/{todoId}")
-    public ResponseEntity<ApiResponse<TodoResponse>> delete(@Valid @RequestBody TodoRequest request, @PathVariable Long todoId) {
-        TodoResponse response = todoService.delete(todoId);
-        log.info("delete response: {}", response);
-        return ApiResponse.respond(HttpStatus.OK, "할 일이 삭제됐습니다.", response);
+    public ResponseEntity<Void> delete(@PathVariable Long todoId) {
+        todoService.delete(todoId);
+        log.info("deleted todo: {}", todoId);
+        return ResponseEntity.noContent().build();
     }
 }

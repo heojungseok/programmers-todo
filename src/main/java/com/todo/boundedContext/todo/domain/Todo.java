@@ -34,12 +34,8 @@ public class Todo {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    private Todo(String title) {
+    public Todo(String title) {
         this.title = title;
-    }
-
-    public static Todo createTodo(String title) {
-        return new Todo(title);
     }
 
     public void update(String title, CompletionStatus completed) {

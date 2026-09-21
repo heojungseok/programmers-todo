@@ -21,7 +21,7 @@ public class TodoService {
     @Transactional
     public TodoResponse create(String title) {
 
-        Todo todo = Todo.createTodo(title);
+        Todo todo = new Todo(title);
         todoRepository.save(todo);
 
         return TodoResponse.from(todo);

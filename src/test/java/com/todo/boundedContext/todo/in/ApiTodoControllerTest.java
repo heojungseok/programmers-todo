@@ -62,8 +62,10 @@ class ApiTodoControllerTest {
                 .get().uri("/api/notfound")
                 .exchange()
                 .expectStatus().isNotFound()
-                .expectBody(String.class)
-                .isEqualTo("No static resource api/notfound.");
+                .expectBody()
+                .jsonPath("$.resultCode").isEqualTo("404 NOT_FOUND")
+                .jsonPath("$.msg").isEqualTo("존재하지 않는 API 경로입니다.")
+                .jsonPath("$.data").doesNotExist();
     }
 
     @Test

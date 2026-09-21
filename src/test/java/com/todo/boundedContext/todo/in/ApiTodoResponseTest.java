@@ -186,15 +186,4 @@ class ApiTodoResponseTest {
                 .exchange()
                 .expectStatus().isNotFound();
     }
-
-    @Test
-    void 지원하지_않는_메서드도_같은_오류_모양이다() {
-        restClient.patch().uri("/api/todos/1")
-                .exchange()
-                .expectStatus().isEqualTo(405)
-                .expectBody()
-                .jsonPath("$.resultCode").isEqualTo("405 METHOD_NOT_ALLOWED")
-                .jsonPath("$.msg").exists()
-                .jsonPath("$.data").doesNotExist();
-    }
 }

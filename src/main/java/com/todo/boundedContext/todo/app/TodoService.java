@@ -38,8 +38,7 @@ public class TodoService {
 
     @Transactional
     public TodoResponse update(Long todoId, TodoUpdateRequest request) {
-        Todo todo = todoRepository.findById(todoId)
-                .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 할 일 입니다."));
+        Todo todo = findTodo(todoId);
 
         todo.update(request.getTitle(), request.getCompleted());
         // @LastModifiedDate는 flush 시점에 채워지므로 응답 전에 반영한다.
@@ -50,17 +49,20 @@ public class TodoService {
 
     @Transactional
     public void delete(Long todoId) {
-        Todo todo = todoRepository.findById(todoId)
-                .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 할 일 입니다."));
+        Todo todo = findTodo(todoId);
 
         todoRepository.delete(todo);
     }
 
     @Transactional(readOnly = true)
     public TodoResponse detailTodo(Long todoId) {
-        Todo todo = todoRepository.findById(todoId)
-                .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 할 일 입니다."));
+        Todo todo = findTodo(todoId);
 
         return TodoResponse.from(todo);
+    }
+
+    private Todo findTodo(Long todoId) {
+        return todoRepository.findById(todoId)
+                .orElseThrow(() -> new NotFoundEntityException("존재하지 않는 할 일 입니다."));
     }
 }
